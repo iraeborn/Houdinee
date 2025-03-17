@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+    frontend:
+        build:
+            context: ./frontend
+        ports:
+            - "5173:5173"
+        expose:
+            - "5173"
+        container_name: frontend
+        depends_on:
+            [backend]
+    backend:
+        build:
+            context: ./backend
+        ports:
+            - "3100:3100"
+        expose:
+            - "3100"
+        container_name: backend
+        depends_on:
+            - nginx
+    nginx:
+        restart: always
+        image: nginx:latest
+        container_name: nginx
+        volumes:
+            - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+        ports:
+            - "80:80"
